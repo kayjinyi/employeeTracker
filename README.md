@@ -12,47 +12,43 @@
 
 ## Descripttion
 
-The manager WANTs to generate a webpage that displays my team's basic info. SO THAT the manager has quick access to their emails and GitHub profiles
+The business owners WANT to be able to view and manage the departments, roles, and employees in company
+SO THAT the business owners can organize and plan business
 
-GIVEN a command-line application that accepts user input
+Given a command-line application that accepts user input
+WHEN the business owners start the application
+THEN the business owners are presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 
-WHEN the manager is prompted for my team members and their information
+WHEN the business owners choose to view all departments
+THEN the business owners are presented with a formatted table showing department names and department ids
 
-THEN an HTML file is generated that displays a nicely formatted team roster based on user input
+WHEN the business owners choose to view all roles
+THEN the business owners are presented with the job title, role id, the department that role belongs to, and the salary for that role
 
-WHEN the manager clicks on an email address in the HTML
+WHEN the business owners choose to view all employees
+THEN the business owners are presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 
-THEN default email program opens and populates the TO field of the email with the address
+WHEN the business owners choose to add a department
+THEN the business owners are prompted to enter the name of the department and that department is added to the database
 
-WHEN the manager clicks on the GitHub username
+WHEN the business owners choose to add a role
+THEN the business owners are prompted to enter the name, salary, and department for the role and that role is added to the database
 
-THEN that GitHub profile opens in a new tab
+WHEN the business owners choose to add an employee
+THEN the business owners are prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 
-WHEN the manager starts the application
-
-THEN the manager is prompted to enter the team manager’s name, employee the ID, email address, and office number
-
-WHEN the manager enters the team manager’s name, employee the managerD, email address, and office number
-
-THEN the manager is presented with a menu with the option to add an engineer or an intern or to finish building my teis
-
-WHEN the manager selects the engineer option
-
-THEN the manager is prompted to enter the engineer’s name, ID, email, and GitHub username, and the manager is taken back to the menu
-
-WHEN the manager selects the intern option
-
-THEN the manager is prompted to enter the intern’s name, the managerD, email, and school, and the manager is taken back to the menu
-
-WHEN the manager decides to finish building my team
-
-THEN the manager exits the application, and the HTML is generated
+WHEN the business owners choose to update an employee role
+THEN the business owners am prompted to select an employee to update and their new role and this information is updated in the database
 
 ---
 
 ## Installation
 
-Use [Jest](https://www.npmjs.com/package/jest) for running the unit tests and [Inquirer](https://www.npmjs.com/package/inquirer) for collecting input from the user. The application will be invoked by using the following command:
+    * Uses the [Inquirer package](https://www.npmjs.com/package/inquirer).
+
+    * Uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to a MySQL database.
+
+    * Uses the [console.table package](https://www.npmjs.com/package/console.table) to print MySQL rows to the console.
 
 node index.js
 
@@ -62,7 +58,8 @@ node index.js
 
 The following image shows a mock-up of the generated HTML’s appearance and functionality:
 
-![HTML webpage titled “My Team” features five boxes listing employee names, titles, and other key info.](./Assets/computerDemo.png)
+![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/computerDemo.png)
+
 ![Mobile titled “My Team” features five boxes listing employee names, titles, and other key info.](./Assets/mobileDemo.png)
 ![Tested](./Assets/Screen%20Shot%202022-04-24%20at%203.05.34%20AM.png)
 
