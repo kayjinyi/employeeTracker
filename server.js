@@ -1,11 +1,18 @@
-const express = require("express");
+const inquirer = require("inquirer");
 // Import and require mysql2
-const PORT =  3001;
 const mysql = require("mysql2");
-const app = express();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+const db = mysql.createConnection(
+  {
+    host: "localhost",
+    // MySQL username,
+    user: "root",
+    // MySQL password
+    password: "password",
+    database: "tracker_db",
+  },
+  console.log(`Connected to the tracker_db database.`)
+);
 
 function askQuestion() {
   inquirer
@@ -13,7 +20,7 @@ function askQuestion() {
     .prompt([
       {
         type: "list",
-        message: "Following optiongs",
+        message: "What would you like to do",
         name: "option",
         choices: [
           "view all departments",
@@ -31,7 +38,7 @@ function askQuestion() {
         case "view all departments":
           viewDept();
           break;
-        case "view all roles"
+        case "view all roles":
           viewRole();
           break;
         case "view all employees":
@@ -56,65 +63,188 @@ function askQuestion() {
     });
 }
 
-function viewDept(){
+function viewDept() {
+  db.query("SELECT * FROM department", function (err, results) {
+    if (err) {
+      console.log(err);
+    }
+    console.log(results);
+  });
+}
 
-};
+function viewRole() {
+  db.query(
+    "SELECT role.id AS id, role.title AS title, department.name AS department, role.salary AS salary FROM role LEFT JOIN department ON role.department_id = department.id;",
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      console.log(results);
+    }
+  );
+}
 
-function viewRole(){
+function viewEmployee() {
+  db.query(
+    "SELECT employee.id AS id, employee.first_name AS first_name , employee.last_name AS last_name, department.name AS department, role.salary AS salary, employee.manager AS manager FROM employee LEFT JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ;",
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      console.log(results);
+    }
+  );
+}
+//How to save the result from viewRole???
 
-};
+function addDept() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "departmentName",
+        message: "what is the name of Department?",
+      },
+    ])
+    .then((answers) => {
+      const sql = "INSERT INTO department (name) VALUES (?)";
 
-function viewEmployee(){
+      db.query(sql, data, (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(results);
+      });
+    });
+}
 
-};
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "roleName",
+        message: "what is the name of role?",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "what is the salary of role",
+      },
+      {
+        type: "list",
+        message: "Which department does the role belong to",
+        name: "dept",
+        choices: ["sales", "Engineering", "Finance", "Legal"],
+      },
+    ])
+    .then((answers) => {
+      answers.roleName;
+      answers.salary;
+      answers.dept;
+      const sql = "INSERT INTO department (name) VALUES (?)";
 
-function addDept(){
+      db.query(sql, data, (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(results);
+      });
+    });
+}
 
-};
-
-function addRole(){
-
-};
-
-function addEmployee(){
-
-};
-
-function updateEmployee(){
-
-};
+function addEmployee() {
+  function addRole() {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "firstName",
+          message: "what is the employee's first name?",
+        },
+        {
+          type: "input",
+          name: "lastName",
+          message: "what is the employee's last name?",
+        },
+        {
+          type: "list",
+          message: "what is the employee's role?",
+          name: "role",
+          choices: [
+            "Sales Lead",
+            "Salesperson",
+            "Lead engineer",
+            "Software engineer",
+            "Account Manager",
+            "Accountant",
+            "Legal Team Lead",
+            "Lawyer",
+          ],
+        },
+        {
+          type: "list",
+          message: "what is the employee's manager?",
+          name: "role",
+          choices: ["John Smith", "Ashley Lee", "Kunal Wan", "Sarah Lourd"],
+        },
+      ])
+      .then((answers) => {
+        // answers.roleName;
+        // answers.salary
+        // answers.dept;
+        // const sql = "INSERT INTO department (name) VALUES (?)";
+        // db.query(sql,data, (err, results) => {
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        //   console.log(results);
+      });
+  }
+}
+function updateEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "which employee do you want to update",
+        name: "employeeName",
+        choices: [
+          "John Smith",
+          "Mike Chan",
+          "Ashley Lee",
+          "Kevin Rodriguez",
+          "Kunal Wan",
+          "Malia Stein",
+          "Sarah Lourd",
+          "Tom Allen",
+        ],
+      },
+      {
+        type: "list",
+        message: "which role do you want to assign the selected employee?",
+        name: "role",
+        choices: [
+          "Sales Lead",
+          "Salesperson",
+          "Lead engineer",
+          "Software engineer",
+          "Account Manager",
+          "Accountant",
+          "Legal Team Lead",
+          "Lawyer",
+        ],
+      },
+    ])
+    .then((answers) => {
+      //   const sql = "INSERT INTO department (name) VALUES (?)";
+      //   db.query(sql,data, (err, results) => {
+      //     if (err) {
+      //       console.log(err);
+      //     }
+      //     console.log(results);
+      // });
+    });
+}
 
 askQuestion();
-// Connect to database
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    // MySQL username,
-    user: "root",
-    // MySQL password
-    password: "",
-    database: "tracker_db",
-  },
-  console.log(`Connected to the tracker_db database.`)
-);
-
-db.query(`DELETE FROM course_names WHERE id = ?`, 3, (err, result) => {
-  if (err) {
-    console.log(err);
-  }
-  console.log(result);
-});
-
-// Query database
-db.query("SELECT * FROM course_names", function (err, results) {
-  console.log(results);
-});
-
-// Default response for any other request (Not Found)
-app.use((req, res) => {
-  res.status(404).end();
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});

@@ -1,32 +1,32 @@
 
 
 INSERT INTO department (name)
-VALUES ("HR"),
-        ("R&D"),
-        ("Test"),
+VALUES ("Sales"),
+        ("Engineering"),
         ("Finance"),
-        ("Accounting"),  
-        ("Physics");     
-INSERT INTO role (id, name, salary, department_id)
-VALUES ;
-INSERT INTO students (id, first_name, last_name, role_id, manager_id)
-VALUES ("Elliot", "Smith", false),
-       ("Amira", "Afzal", true),
-       ("Christoper", "Lee", true),
-       ("Verónica", "Rodriguez", false),
-       ("Igor", "Stein", true);
+        ("Legal");  
 
--- CREATE TABLE role (
---   id INT NOT NULL,
---   name VARCHAR(30) NOT NULL,
---   salary DECIMAL NOT NULL,
---   department_id INT NOT NULL,
+SELECT * FROM department;   
+INSERT INTO role (id, title, salary, department_id)
+VALUES (1,"Sales Lead", 80000, 1),
+        (2,"Salesperson", 80000, 1),
+       (3,"Lead engineer", 100000, 2),
+       (4,"Software engineer", 100000, 2),
+       (5,"Account Manager", 190000, 3),
+       (6,"Accountant", 90000, 3),
+       (7,"Legal Team Lead", 280000, 4),
+       (8,"Lawyer", 380000, 4);
+       
+ SELECT * FROM role;       
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
+VALUES (1,"John", "Smith",1,NULL ),
+       (2,"Mike", "Chan",2,1),
+       (3,"Ashley", "Lee",3,NULL),
+       (4,"Kevin", "Rodriguez",4,3),
+        (5,"Kunal", "Wan",5,NULL),
+       (6,"Malia", "Stein",6,5),
+       (7,"Sarah", "Lourd",7,NULL),
+       (8,"Tom", "Allen",8,7);
+ SELECT * FROM employee; 
 
--- );
--- CREATE TABLE employee (
---   id INT NOT NULL,
---   first_name VARCHAR(30) NOT NULL,
---   last_name VARCHAR(30) NOT NULL,
---   role_id INT NOT NULL,
---   manager_id INT NOT NULL
--- )
+
