@@ -10,7 +10,7 @@
 
 ---
 
-## walkthrough video
+## Walkthrough video
 
 [walkthrough video ](https://watch.screencastify.com/v/PNvavS7FV2XilAiQ4GuT) <br>
 
