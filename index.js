@@ -272,7 +272,6 @@ function addEmployee() {
             if (err) {
               console.log(err);
             }
-            console.table(results);
             askQuestion();
           });
         }

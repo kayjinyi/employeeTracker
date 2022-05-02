@@ -2,11 +2,17 @@
 
 ## Table of Contents
 
+- [walkthrough video](#walkthrough-video)
 - [Descripttion](#descripttion)
 - [Installation](#installation)
 - [Mock-Up](#mock-up)
 - [Questions](#questions)
-- [walkthrough video](#walkthrough-video)
+
+---
+
+## walkthrough video
+
+[walkthrough video ](https://watch.screencastify.com/v/PNvavS7FV2XilAiQ4GuT) <br>
 
 ---
 
@@ -58,10 +64,10 @@ node index.js
 
 The following image shows a mock-up of the generated HTML’s appearance and functionality:
 
-![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/computerDemo.png)
+![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/sql.png)
 
-![Mobile titled “My Team” features five boxes listing employee names, titles, and other key info.](./Assets/mobileDemo.png)
-![Tested](./Assets/Screen%20Shot%202022-04-24%20at%203.05.34%20AM.png)
+![App titled “My Team” features five boxes listing employee names, titles, and other key info.](./Assets/Screen%20Shot%202022-05-01%20at%2010.14.23%20PM.png)
+![Tested](./Assets/Screen%20Shot%202022-05-01%20at%2010.15.07%20PM.png)
 
 ---
 
@@ -72,7 +78,3 @@ Feel free to reach out via Github or email with any questions. <br>
 [email](mailto:kayjinyi@gmail.com)
 
 ---
-
-## walkthrough video
-
-[walkthrough video ](https://watch.screencastify.com/v/b2FctsKyAie36lVqYXpk) <br>
