@@ -131,60 +131,44 @@ function addDept() {
 }
 
 function addRole() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "roleName",
-        message: "what is the name of role?",
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "what is the salary of role",
-      },
-      {
-        type: "list",
-        message: "Which department does the role belong to",
-        name: "dept",
-        choices: ["sales", "Engineering", "Finance", "Legal", "service"],
-      },
-    ])
-    .then((answers) => {
-      let dept = "0";
-      switch (answers.dept) {
-        case "sales":
-          dept = "1";
-          break;
-        case "Engineering":
-          dept = "2";
-          break;
-        case "Finance":
-          dept = "3";
-          break;
-        case "Legal":
-          dept = "4";
-          break;
-        case "service":
-          dept = "5";
-          break;
-        default:
-          console.log("Done!");
-          break;
-      }
-      const sql = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`; //INSERT MULTI
-      db.query(
-        sql,
-        [answers.roleName, answers.salary, dept],
-        function (err, results) {
-          if (err) {
-            console.log(err);
+  db.query("SELECT id AS value, name FROM department", function (err, result) {
+    if (err) {
+      console.log(err);
+    }
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "roleName",
+          message: "what is the name of role?",
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "what is the salary of role",
+        },
+        {
+          type: "list",
+          message: "Which department does the role belong to",
+          name: "dept",
+          choices: result,
+        },
+      ])
+      .then((answers) => {
+        const sql = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`; //INSERT MULTI
+        db.query(
+          sql,
+          [answers.roleName, answers.salary, answers.dept],
+          function (err, results) {
+            if (err) {
+              console.log(err);
+            }
+            console.log(`Added (${answers.roleName}) to Database`);
+            askQuestion();
           }
-          console.log(`Added (${answers.roleName}) to Database`);
-          askQuestion();
-        }
-      );
-    });
+        );
+      });
+  });
 }
 
 function addEmployee() {
@@ -288,7 +272,7 @@ function addEmployee() {
             if (err) {
               console.log(err);
             }
-            console.log(results);
+            console.table(results);
             askQuestion();
           });
         }
