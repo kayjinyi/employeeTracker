@@ -1,7 +1,10 @@
--- SELECT *
--- FROM role
--- JOIN department ON role.department_id = department.id;
-
--- SELECT *
--- FROM employee
--- JOIN role ON employee.role_id = role.id;
+-- SELECT role.id AS id, role.title AS title, department.name AS department, role.salary AS salary FROM role LEFT JOIN department ON role.department_id = department.id;
+-- SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, role.salary AS salary
+-- FROM employee 
+-- JOIN role 
+-- ON employee.role_id = role.id
+-- FROM role 
+-- JOIN department 
+-- ON role.department_id = department.id
+-- --  employee.manager_id = employee.id;
+-- -- employee.first_name AS manager

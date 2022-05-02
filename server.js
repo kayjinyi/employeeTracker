@@ -1,3 +1,4 @@
+const express = require("express"); //?
 const inquirer = require("inquirer");
 // Import and require mysql2
 const mysql = require("mysql2");
@@ -41,9 +42,9 @@ function askQuestion() {
         case "view all roles":
           viewRole();
           break;
-        case "view all employees":
-          viewEmployee();
-          break;
+        // case "view all employees":
+        //   viewEmployee();
+        //   break;
         case "add a department":
           addDept();
           break;
@@ -57,7 +58,7 @@ function askQuestion() {
           updateEmployee();
           break;
         default:
-          console.log("Your team is built");
+          console.log("Tracker Done!");
           break;
       }
     });
@@ -69,6 +70,7 @@ function viewDept() {
       console.log(err);
     }
     console.log(results);
+    askQuestion();
   });
 }
 
@@ -80,22 +82,10 @@ function viewRole() {
         console.log(err);
       }
       console.log(results);
+      askQuestion();
     }
   );
 }
-
-function viewEmployee() {
-  db.query(
-    "SELECT employee.id AS id, employee.first_name AS first_name , employee.last_name AS last_name, department.name AS department, role.salary AS salary, employee.manager AS manager FROM employee LEFT JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ;",
-    function (err, results) {
-      if (err) {
-        console.log(err);
-      }
-      console.log(results);
-    }
-  );
-}
-//How to save the result from viewRole???
 
 function addDept() {
   inquirer
@@ -107,14 +97,17 @@ function addDept() {
       },
     ])
     .then((answers) => {
-      const sql = "INSERT INTO department (name) VALUES (?)";
-
-      db.query(sql, data, (err, results) => {
-        if (err) {
-          console.log(err);
+      db.query(
+        "INSERT INTO department (name) VALUES (?)",
+        answers.departmentName,
+        function (err, results) {
+          if (err) {
+            console.log(err);
+          }
+          console.log(`Added (${answers.departmentName}) to Database`);
+          askQuestion();
         }
-        console.log(results);
-      });
+      );
     });
 }
 
@@ -135,73 +128,155 @@ function addRole() {
         type: "list",
         message: "Which department does the role belong to",
         name: "dept",
-        choices: ["sales", "Engineering", "Finance", "Legal"],
+        choices: ["sales", "Engineering", "Finance", "Legal", "service"],
       },
     ])
     .then((answers) => {
-      answers.roleName;
-      answers.salary;
-      answers.dept;
-      const sql = "INSERT INTO department (name) VALUES (?)";
-
-      db.query(sql, data, (err, results) => {
-        if (err) {
-          console.log(err);
+      let dept = "0";
+      switch (answers.dept) {
+        case "sales":
+          dept = "1";
+          break;
+        case "Engineering":
+          dept = "2";
+          break;
+        case "Finance":
+          dept = "3";
+          break;
+        case "Legal":
+          dept = "4";
+          break;
+        case "service":
+          dept = "5";
+          break;
+        default:
+          console.log("Done!");
+          break;
+      }
+      const sql = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`; //INSERT MULTI
+      db.query(
+        sql,
+        [answers.roleName, answers.salary, dept],
+        function (err, results) {
+          if (err) {
+            console.log(err);
+          }
+          console.log(`Added (${answers.roleName}) to Database`);
+          askQuestion();
         }
-        console.log(results);
-      });
+      );
     });
 }
 
 function addEmployee() {
-  function addRole() {
-    inquirer
-      .prompt([
-        {
-          type: "input",
-          name: "firstName",
-          message: "what is the employee's first name?",
-        },
-        {
-          type: "input",
-          name: "lastName",
-          message: "what is the employee's last name?",
-        },
-        {
-          type: "list",
-          message: "what is the employee's role?",
-          name: "role",
-          choices: [
-            "Sales Lead",
-            "Salesperson",
-            "Lead engineer",
-            "Software engineer",
-            "Account Manager",
-            "Accountant",
-            "Legal Team Lead",
-            "Lawyer",
-          ],
-        },
-        {
-          type: "list",
-          message: "what is the employee's manager?",
-          name: "role",
-          choices: ["John Smith", "Ashley Lee", "Kunal Wan", "Sarah Lourd"],
-        },
-      ])
-      .then((answers) => {
-        // answers.roleName;
-        // answers.salary
-        // answers.dept;
-        // const sql = "INSERT INTO department (name) VALUES (?)";
-        // db.query(sql,data, (err, results) => {
-        //   if (err) {
-        //     console.log(err);
-        //   }
-        //   console.log(results);
-      });
-  }
-}
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "what is the employee's first name?",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "what is the employee's last name?",
+      },
+      {
+        type: "list",
+        message: "what is the employee's role?",
+        name: "role",
+        choices: [
+          "Sales Lead",
+          "Salesperson",
+          "Lead engineer",
+          "Software engineer",
+          "Account Manager",
+          "Accountant",
+          "Legal Team Lead",
+          "Lawyer",
+          "customer service",
+        ],
+      },
+      {
+        type: "list",
+        message: "what is the employee's manager?",
+        name: "manager",
+        choices: ["John Smith", "Ashley Lee", "Kunal Wan", "Sarah Lourd"],
+      },
+    ])
+    .then((answers) => {
+      let roleId = "0";
+      let managerId = "0";
+      switch (answers.role) {
+        case "sales Lead":
+          roleId = "1";
+          break;
+        case "Salesperson":
+          roleId = "2";
+          break;
+        case "Lead engineer":
+          roleId = "3";
+          break;
+        case "Software engineer":
+          roleId = "4";
+          break;
+        case "Account Manager":
+          roleId = "5";
+          break;
+        case "Accountant":
+          roleId = "6";
+          break;
+        case "Legal Team Lead":
+          roleId = "7";
+          break;
+        case "Lawyer":
+          roleId = "8";
+          break;
+        case "customer service":
+          roleId = "9";
+          break;
+        default:
+          console.log("Done!");
+          break;
+      }
+      switch (answers.manager) {
+        case "John Smith":
+          managerId = "1";
+          break;
+        case "Ashley Lee":
+          managerId = "3";
+          break;
+        case "Kunal Wan":
+          managerId = "5";
+          break;
+        case "Sarah Lourd":
+          managerId = "7";
+          break;
+        default:
+          console.log("Done!");
+          break;
+      }
+      const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`; //INSERT MULTI
+      db.query(
+        sql,
+        [answers.firstName, answers.lastName, roleId, managerId],
+        function (err, results) {
+          if (err) {
+            console.log(err);
+          }
+          console.log(`Added (${answers.firstName}) to Database`);
+          db.query("SELECT * FROM employee", function (err, results) {
+            if (err) {
+              console.log(err);
+            }
+            console.log(results);
+            askQuestion();
+          });
+        }
+      );
+    });
+} //need to sole the auto_increment for employee form
+
 function updateEmployee() {
   inquirer
     .prompt([
@@ -218,6 +293,7 @@ function updateEmployee() {
           "Malia Stein",
           "Sarah Lourd",
           "Tom Allen",
+          "Sam Kash",
         ],
       },
       {
@@ -237,14 +313,83 @@ function updateEmployee() {
       },
     ])
     .then((answers) => {
-      //   const sql = "INSERT INTO department (name) VALUES (?)";
-      //   db.query(sql,data, (err, results) => {
-      //     if (err) {
-      //       console.log(err);
-      //     }
-      //     console.log(results);
-      // });
+      let employeeId = "0";
+      let roleId = "0";
+      switch (answers.employeeName) {
+        case "John Smith":
+          employeeId = "1";
+          break;
+        case "Mike Chan":
+          employeeId = "2";
+          break;
+        case "Ashley Lee":
+          employeeId = "3";
+          break;
+        case "Kevin Rodriguez":
+          employeeId = "4";
+          break;
+        case "Kunal Wan":
+          employeeId = "5";
+          break;
+        case "Malia Stein":
+          employeeId = "6";
+          break;
+        case "Sarah Lourd":
+          employeeId = "7";
+          break;
+        case "Tom Allen":
+          employeeId = "8";
+          break;
+        case "Sam Kash":
+          employeeId = "9";
+          break;
+        default:
+          console.log("Done!");
+          break;
+      }
+      switch (answers.role) {
+        case "sales Lead":
+          roleId = "1";
+          break;
+        case "Salesperson":
+          roleId = "2";
+          break;
+        case "Lead engineer":
+          roleId = "3";
+          break;
+        case "Software engineer":
+          roleId = "4";
+          break;
+        case "Account Manager":
+          roleId = "5";
+          break;
+        case "Accountant":
+          roleId = "6";
+          break;
+        case "Legal Team Lead":
+          roleId = "7";
+          break;
+        case "Lawyer":
+          roleId = "8";
+          break;
+        case "customer service":
+          roleId = "9";
+          break;
+        default:
+          console.log("Done!");
+          break;
+      }
+      const sql = "UPDATE employee SET role_id = ? WHERE id = ?";
+      params = [roleId, employeeId];
+
+      db.query(sql, params, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log("Updated employee's role");
+        askQuestion();
+      });
     });
-}
+} //How do you know succeed or not???
 
 askQuestion();

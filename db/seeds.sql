@@ -7,15 +7,15 @@ VALUES ("Sales"),
         ("Legal");  
 
 SELECT * FROM department;   
-INSERT INTO role (id, title, salary, department_id)
-VALUES (1,"Sales Lead", 80000, 1),
-        (2,"Salesperson", 80000, 1),
-       (3,"Lead engineer", 100000, 2),
-       (4,"Software engineer", 100000, 2),
-       (5,"Account Manager", 190000, 3),
-       (6,"Accountant", 90000, 3),
-       (7,"Legal Team Lead", 280000, 4),
-       (8,"Lawyer", 380000, 4);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Sales Lead", 80000, 1),
+        ("Salesperson", 80000, 1),
+       ("Lead engineer", 100000, 2),
+       ("Software engineer", 100000, 2),
+       ("Account Manager", 190000, 3),
+       ("Accountant", 90000, 3),
+       ("Legal Team Lead", 280000, 4),
+       ("Lawyer", 380000, 4);
        
  SELECT * FROM role;       
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
