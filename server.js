@@ -42,9 +42,9 @@ function askQuestion() {
         case "view all roles":
           viewRole();
           break;
-        // case "view all employees":
-        //   viewEmployee();
-        //   break;
+        case "view all employees":
+          viewEmployee();
+          break;
         case "add a department":
           addDept();
           break;
@@ -69,7 +69,7 @@ function viewDept() {
     if (err) {
       console.log(err);
     }
-    console.log(results);
+    console.table(results);
     askQuestion();
   });
 }
@@ -81,7 +81,26 @@ function viewRole() {
       if (err) {
         console.log(err);
       }
-      console.log(results);
+      console.table(results);
+      askQuestion();
+    }
+  );
+}
+function viewEmployee() {
+  db.query(
+    `SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, role.salary AS salary, role.title AS title, CONCAT(manager.first_name," ", manager.last_name) AS manager
+    FROM employee 
+    JOIN role 
+    ON employee.role_id = role.id
+    JOIN department 
+    ON role.department_id = department.id
+    LEFT JOIN employee manager
+    ON manager.id = employee.manager_id;`,
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      console.table(results);
       askQuestion();
     }
   );
