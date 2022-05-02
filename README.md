@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [walkthrough video](#walkthrough-video)
+- [Walkthrough video](#walkthrough-video)
 - [Descripttion](#descripttion)
 - [Installation](#installation)
 - [Mock-Up](#mock-up)
